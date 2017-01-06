@@ -57,7 +57,88 @@ cities.push(new City ("35","Sacramento","California","485,199","466,488","+4.01%
 cities.push(new City ("36","Long Beach","California","473,577","462,257","+2.45%","50.3 sq mi","130.3 km2","9,191 per sq mi","3,549 km−2","33.8091,-118.1553"));
 cities.push(new City ("37","Kansas City","Missouri","470,800","459,787","+2.40%","315.0 sq mi","815.7 km2","1,460 per sq mi","564 km−2","39.1252,-94.5511"));
 cities.push(new City ("38","Mesa","Arizona","464,704","439,041","+5.85%","136.5 sq mi","353.4 km2","3,218 per sq mi","1,242 km−2","33.4019,-111.7174"));
-cities.push(new City ("39","Atlanta","Georgia","456,002","420,003","+8.57%","133.2 sq mi","344.9 km2","3,154 per sq mi","1,218 km−2","33.7629,-84.4227"));
+cities.push(new City ("39","Atlanta","Georgia","456,002","420,003","+8.57%","133.2 sq mi","344.9 km2","3,154 per sq mi","1,218 km−2","33.7629,-84.4227"));  
+
+  var contentString = '<div id="content">'+
+    '<div id="siteNotice">'+
+    '</div>'+
+    '<h1 id="firstHeading" class="firstHeading">'+this.city+'</h1>'+
+    '<div id="bodyContent">'+
+    '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large '+
+    'sandstone rock formation in the southern part of the '+
+    'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+    'south west of the nearest large town, Alice Springs; 450&#160;km '+
+    '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+    'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+    'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+    'Aboriginal people of the area. It has many springs, waterholes, '+
+    'rock caves and ancient paintings. Uluru is listed as a World '+
+    'Heritage Site.</p>'+
+    '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+    'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+    '(last visited June 22, 2009).</p>'+
+    '</div>'+
+    '</div>';
 
 
-// console.log(cities);
+function initMap() {
+    var city = $('.cityItem');
+    var ATV = {lat: 33.8486730, lng: -84.3733130};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 4,
+      center: ATV
+    });
+    var marker = new google.maps.Marker({
+      position: ATV,
+      map: map
+    });
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+
+    // city.addDOMListener('click', function(){
+    //   getCity();
+    // });
+
+    var citiesHTML = '';
+    for(let i = 0; i < cities.length; i++){
+      citiesHTML += '<li><a href="#" class="cityItem" index="' + [i] + '">' + cities[i].city + '</a></li>';
+    }
+
+    $('#content ol').html(citiesHTML); 
+
+    function getCity(indexVar){
+      // console.log(indexVar);
+      var infoString = `${cities[indexVar].city} is number ${cities[indexVar].yearRank} in population for 2016.`;
+      var city = {lat: cities[indexVar].lat, lng: cities[indexVar].lng};
+      // var map = new google.maps.Map(document.getElementById('map'), {
+      //   zoom: 6,
+      //   center: city
+      // });
+      var marker = new google.maps.Marker({
+        position: city,
+        map: map
+      });
+
+      var infowindow = new google.maps.InfoWindow({
+        content: infoString
+      });
+
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
+    }
+    $(document).ready(function(){
+      $('.cityItem').click(function(){
+        var indexVar = $(this).attr('index');
+        // console.log(this);
+        // console.log(indexVar);
+        getCity(indexVar);
+      });
+    }); 
+  }
