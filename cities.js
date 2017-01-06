@@ -59,34 +59,25 @@ cities.push(new City ("37","Kansas City","Missouri","470,800","459,787","+2.40%"
 cities.push(new City ("38","Mesa","Arizona","464,704","439,041","+5.85%","136.5 sq mi","353.4 km2","3,218 per sq mi","1,242 km−2","33.4019,-111.7174"));
 cities.push(new City ("39","Atlanta","Georgia","456,002","420,003","+8.57%","133.2 sq mi","344.9 km2","3,154 per sq mi","1,218 km−2","33.7629,-84.4227"));  
 
-  var contentString = '<div id="content">'+
-    '<div id="siteNotice">'+
-    '</div>'+
-    '<h1 id="firstHeading" class="firstHeading">'+this.city+'</h1>'+
-    '<div id="bodyContent">'+
-    '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large '+
-    'sandstone rock formation in the southern part of the '+
-    'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-    'south west of the nearest large town, Alice Springs; 450&#160;km '+
-    '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-    'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-    'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-    'Aboriginal people of the area. It has many springs, waterholes, '+
-    'rock caves and ancient paintings. Uluru is listed as a World '+
-    'Heritage Site.</p>'+
-    '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-    'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-    '(last visited June 22, 2009).</p>'+
-    '</div>'+
+  var atvString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">Atlanta Tech Village</h1>'+
+      '<div id="bodyContent">'+
+        '<p><b>The Atlanta Tech Village</b>, also referred to as the <b>ATV</b>, is located in Buckhead in Atlanta, GA.'+
+        'This is the home of DigitalCrafts.</p>'+
+        '<p><a href="http://www.digitalcrafts.com/"> Check out the website! </a></p>'+
+      '</div>'+
     '</div>';
 
 
 function initMap() {
     var city = $('.cityItem');
     var ATV = {lat: 33.8486730, lng: -84.3733130};
+    var US = {lat: 37.0902, lng: -95.7129};
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 4,
-      center: ATV
+      center: US
     });
     var marker = new google.maps.Marker({
       position: ATV,
@@ -94,7 +85,7 @@ function initMap() {
     });
 
     var infowindow = new google.maps.InfoWindow({
-      content: contentString
+      content: atvString
     });
 
     marker.addListener('click', function() {
