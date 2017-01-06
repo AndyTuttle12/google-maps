@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <style>
+      body{
+        text-align: center;
+      }
+      #map {
+        height: 400px;
+        width: 45%;
+        display: inline-block;
+      }
+
+      #list{
+        height: 400px;
+        width: 45%;
+        background-color: #aaa;
+        display: inline-block;
+      }
+
+      #content{
+        margin: 10px auto;
+        float: left;
+        text-align: left;
+        columns: 2;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h3>Biggest Cities in the US</h3>
+    <div id="map"></div>
+    <div id="list">
+      <div id="content">
+        <ol></ol>
+      </div>
+    </div>
+
+
+
+    <script>
+    $(document).ready(function(){
+      $('#content ol').click(function(){
+        var index = $(this).yearRank;
+        getCity();
+      });
+    });
+      function getCity(index){
+        var city = {lat: cities[index].lat, lng: cities[index].lng};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: city
+        });
+        var marker = new google.maps.Marker({
+          position: city,
+          map: map
+        });
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+      }
+
+      
+
+      function initMap() {
+        console.log(cities);
+        var ATV = {lat: 33.8486730, lng: -84.3733130};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: ATV
+        });
+        var marker = new google.maps.Marker({
+          position: ATV,
+          map: map
+        });
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+
+        var citiesHTML = '';
+        for(let i = 0; i < cities.length; i++){
+          citiesHTML += '<a href="#"><li>' + cities[i].city + '</li></a>';
+        }
+
+        $('#content ol').html(citiesHTML); 
+        
+      }
+
+      var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">ATV</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large '+
+            'sandstone rock formation in the southern part of the '+
+            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+            'south west of the nearest large town, Alice Springs; 450&#160;km '+
+            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+            'Aboriginal people of the area. It has many springs, waterholes, '+
+            'rock caves and ancient paintings. Uluru is listed as a World '+
+            'Heritage Site.</p>'+
+            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+            '(last visited June 22, 2009).</p>'+
+            '</div>'+
+            '</div>';
+
+        
+      var citiesHTML = '';
+      for(let i = 0; i < cities.length; i++){
+        citiesHTML += '<a href="#"><p>' + cities[i].yearRank + ', ' + cities[i].city + '</p></a>';
+      }
+
+      $('#content').html(citiesHTML);
+      
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZmfc1n_ygm1miyDAoYErriAV4Z_TLCec&callback=initMap">
+    </script>
+    <script src="cities.js" type="text/javascript"></script>
+  </body>
+</html> 
