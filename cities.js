@@ -59,77 +59,77 @@ cities.push(new City ("37","Kansas City","Missouri","470,800","459,787","+2.40%"
 cities.push(new City ("38","Mesa","Arizona","464,704","439,041","+5.85%","136.5 sq mi","353.4 km2","3,218 per sq mi","1,242 km−2","33.4019,-111.7174"));
 cities.push(new City ("39","Atlanta","Georgia","456,002","420,003","+8.57%","133.2 sq mi","344.9 km2","3,154 per sq mi","1,218 km−2","33.7629,-84.4227"));  
 
-  var atvString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Atlanta Tech Village</h1>'+
-      '<div id="bodyContent">'+
-        '<p><b>The Atlanta Tech Village</b>, also referred to as the <b>ATV</b>, is located in Buckhead in Atlanta, GA.'+
-        'This is the home of DigitalCrafts.</p>'+
-        '<p><a href="http://www.digitalcrafts.com/"> Check out the website! </a></p>'+
-      '</div>'+
-    '</div>';
+//   var atvString = '<div id="content">'+
+//       '<div id="siteNotice">'+
+//       '</div>'+
+//       '<h1 id="firstHeading" class="firstHeading">Atlanta Tech Village</h1>'+
+//       '<div id="bodyContent">'+
+//         '<p><b>The Atlanta Tech Village</b>, also referred to as the <b>ATV</b>, is located in Buckhead in Atlanta, GA.'+
+//         'This is the home of DigitalCrafts.</p>'+
+//         '<p><a href="http://www.digitalcrafts.com/"> Check out the website! </a></p>'+
+//       '</div>'+
+//     '</div>';
 
 
-function initMap() {
-    var city = $('.cityItem');
-    var ATV = {lat: 33.8486730, lng: -84.3733130};
-    var US = {lat: 37.0902, lng: -95.7129};
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
-      center: US
-    });
-    var marker = new google.maps.Marker({
-      position: ATV,
-      map: map
-    });
+// function initMap() {
+//     var city = $('.cityItem');
+//     var ATV = {lat: 33.8486730, lng: -84.3733130};
+//     var US = {lat: 37.0902, lng: -95.7129};
+//     var map = new google.maps.Map(document.getElementById('map'), {
+//       zoom: 4,
+//       center: US
+//     });
+//     var marker = new google.maps.Marker({
+//       position: ATV,
+//       map: map
+//     });
 
-    var infowindow = new google.maps.InfoWindow({
-      content: atvString
-    });
+//     var infowindow = new google.maps.InfoWindow({
+//       content: atvString
+//     });
 
-    marker.addListener('click', function() {
-      infowindow.open(map, marker);
-    });
+//     marker.addListener('click', function() {
+//       infowindow.open(map, marker);
+//     });
 
-    // city.addDOMListener('click', function(){
-    //   getCity();
-    // });
+//     // city.addDOMListener('click', function(){
+//     //   getCity();
+//     // });
 
-    var citiesHTML = '';
-    for(let i = 0; i < cities.length; i++){
-      citiesHTML += '<li><a href="#" class="cityItem" index="' + [i] + '">' + cities[i].city + '</a></li>';
-    }
+//     var citiesHTML = '';
+//     for(let i = 0; i < cities.length; i++){
+//       citiesHTML += '<li><a href="#" class="cityItem" index="' + [i] + '">' + cities[i].city + '</a></li>';
+//     }
 
-    $('#content ol').html(citiesHTML); 
+//     $('#content ol').html(citiesHTML); 
 
-    function getCity(indexVar){
-      // console.log(indexVar);
-      var infoString = `${cities[indexVar].city} is number ${cities[indexVar].yearRank} in population for 2016.`;
-      var city = {lat: cities[indexVar].lat, lng: cities[indexVar].lng};
-      // var map = new google.maps.Map(document.getElementById('map'), {
-      //   zoom: 6,
-      //   center: city
-      // });
-      var marker = new google.maps.Marker({
-        position: city,
-        map: map
-      });
+//     function getCity(indexVar){
+//       // console.log(indexVar);
+//       var infoString = `${cities[indexVar].city} is number ${cities[indexVar].yearRank} in population for 2016.`;
+//       var city = {lat: cities[indexVar].lat, lng: cities[indexVar].lng};
+//       // var map = new google.maps.Map(document.getElementById('map'), {
+//       //   zoom: 6,
+//       //   center: city
+//       // });
+//       var marker = new google.maps.Marker({
+//         position: city,
+//         map: map
+//       });
 
-      var infowindow = new google.maps.InfoWindow({
-        content: infoString
-      });
+//       var infowindow = new google.maps.InfoWindow({
+//         content: infoString
+//       });
 
-      marker.addListener('click', function() {
-        infowindow.open(map, marker);
-      });
-    }
-    $(document).ready(function(){
-      $('.cityItem').click(function(){
-        var indexVar = $(this).attr('index');
-        // console.log(this);
-        // console.log(indexVar);
-        getCity(indexVar);
-      });
-    }); 
-  }
+//       marker.addListener('click', function() {
+//         infowindow.open(map, marker);
+//       });
+//     }
+//     $(document).ready(function(){
+//       $('.cityItem').click(function(){
+//         var indexVar = $(this).attr('index');
+//         // console.log(this);
+//         // console.log(indexVar);
+//         getCity(indexVar);
+//       });
+//     }); 
+//   }
