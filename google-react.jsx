@@ -8,9 +8,7 @@ var map = new google.maps.Map(
 
 var infoWindow = new google.maps.InfoWindow({});
 var markers = [];
-
-
-
+var poiMarkers = [];
 var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 
@@ -21,7 +19,19 @@ function initialize() {
   directionsDisplay.setPanel(document.getElementById('directionsPanel'));
 }
 
-
+function createPoI(place){
+	// console.log(place);
+	var marker = new google.maps.Marker({
+		map: map,
+		position: place.geometry.location,
+		icon: place.icon
+	})
+	google.maps.event.addListener(marker, 'click', () =>{
+		infoWindow.setContent(place.name);
+		infoWindow.open(map, marker);
+	})
+	poiMarkers.push(marker);
+}
 
 function calcRoute() {
   // var start = document.getElementById('start').value;
@@ -77,29 +87,37 @@ var GoogleCity = React.createClass({
 			document.getElementById('map'),
 			{
 				center: cityLL,
-				zoom: 10
+				zoom: 14
 			}
 		)
 		directionsDisplay.setMap(map);
-
 
 		var service = new google.maps.places.PlacesService(map);
 		service.nearbySearch(
 			{
 				location: cityLL,
-				radius: 500,
-				type: ['store']
+				radius: 1000,
 			},
 			function(results, status){
-				console.log(results);
+				// console.log(results);
+				if(status === "OK"){
+					results.map(function(currPlace, index){
+						createPoI(currPlace);
+					})
+				}
 			}
 		);
 
+		var bounds = new google.maps.LatLng(cityLL);
+		poiMarkers.map(function(currMarker, index){
+			bounds.extend(currMarker.getPosition());
+		})
+		map.fitBounds(bounds);
 	},
 
 	getEnd: function(event){
 		end = event.target.value
-		console.log(end);
+		// console.log(end);
 	},
 
 	getDirections: function(event){
@@ -181,7 +199,8 @@ var Cities = React.createClass({
 						<tr>
 							<th>City Name</th>
 							<th>City Rank</th>
-							<th colSpan="2">Get Directions</th>
+							<th>Get Directions</th>
+							<th>Zoom</th>
 						</tr>
 					</thead>
 					<tbody>
