@@ -6,19 +6,43 @@ var map = new google.maps.Map(
 	}
 );
 
-function zoomMap(citylat, citylng){
-	console.log(citylat, citylng);
-	var map = new google.maps.Map(
-		document.getElementById('map'),
-		{
-			center:{lat: citylat, lng: citylng},
-			zoom: 12
-		}
-	);
-}
-
 var infoWindow = new google.maps.InfoWindow({});
 var markers = [];
+
+
+
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
+
+function initialize() {
+  directionsDisplay = new google.maps.DirectionsRenderer();
+
+  directionsDisplay.setMap(map);
+  directionsDisplay.setPanel(document.getElementById('directionsPanel'));
+}
+
+
+
+function calcRoute() {
+  // var start = document.getElementById('start').value;
+  // var end = document.getElementById('end').value;
+  var request = {
+    origin: start,
+    destination: end,
+    travelMode: 'DRIVING'
+  };
+  directionsService.route(request, function(result, status) {
+    if (status == 'OK') {
+      directionsDisplay.setDirections(result);
+    }
+  });
+}
+
+initialize();
+// calcRoute();
+
+var start = 'Atlanta, GA';
+var end;
 
 function createMarker(city){
 	var icon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7CFE7569';
@@ -34,7 +58,7 @@ function createMarker(city){
 	})
 
 	google.maps.event.addListener(marker,'click',function(){
-	   infoWindow.setContent(`<h2> ${city.city}</h2><div>${city.state}</div><div>${city.yearEstimate}</div><a href="#" onClick={zoomMap(${city.lat},${city.lng});}>Click to Zoom</a>`);
+	   infoWindow.setContent(`<h2> ${city.city}</h2><div>${city.state}</div><div>${city.yearEstimate}</div><a href="#" onClick={this.zoomIn}>Click to Zoom</a>`);
 	   infoWindow.open(map,marker);
 	 });
 
@@ -46,11 +70,53 @@ var GoogleCity = React.createClass({
 		// console.log('clicked');
 		google.maps.event.trigger(markers[this.props.cityObject.yearRank - 1],"click")
 	},
+
+	zoomIn: function(event){
+		var cityLL = new google.maps.LatLng(this.props.cityObject.lat, this.props.cityObject.lng);
+		map = new google.maps.Map(
+			document.getElementById('map'),
+			{
+				center: cityLL,
+				zoom: 10
+			}
+		)
+		directionsDisplay.setMap(map);
+
+
+		var service = new google.maps.places.PlacesService(map);
+		service.nearbySearch(
+			{
+				location: cityLL,
+				radius: 500,
+				type: ['store']
+			},
+			function(results, status){
+				console.log(results);
+			}
+		);
+
+	},
+
+	getEnd: function(event){
+		end = event.target.value
+		console.log(end);
+	},
+
+	getDirections: function(event){
+		end = this.props.cityObject.city;
+		markers.map(function(marker, index){
+			marker.setMap(null);
+		});
+		calcRoute();
+	},
+
 	render: function(){
 		return(	
 			<tr>
 				<td className="cityName" onClick={this.handleClickedCity}>{this.props.cityObject.city}</td>
 				<td className="cityRank">{this.props.cityObject.yearRank}</td>
+				<td className="cityEnd"><button id="end" type="button" value={this.props.cityObject.city + ', ' + this.props.cityObject.state} lat={this.props.cityObject.lat} lng={this.props.cityObject.lng} onClick={this.getDirections}>To Here</button></td>
+				<td className="cityZoom"><button type="button" onClick={this.zoomIn}>Zoom In</button></td>
 			</tr>		
 		);
 	}
@@ -80,6 +146,10 @@ var Cities = React.createClass({
 		})
 	},
 
+	getStart: function(event){
+		start = event.target.value
+	},
+
 	updateMarkers: function(event){
 		event.preventDefault();
 		markers.map(function(marker, index){
@@ -98,16 +168,20 @@ var Cities = React.createClass({
 			cityRows.push(<GoogleCity cityObject={currentCity} key={index} />);
 		});
 		return(
-			<div>
+			<div id="mapArea">
 				<form onSubmit={this.updateMarkers}>
-					<input type="text" onChange={this.handleInputChange} />
+					<input type="text" placeholder="Search Cities"onChange={this.handleInputChange} />
 					<input type="submit" value="Update Markers" />
+				</form>
+				<form>
+					<label>Set Origin: <input type="text" placeholder="City, State" onChange={this.getStart} /></label>
 				</form>
 				<table>
 					<thead>
 						<tr>
 							<th>City Name</th>
 							<th>City Rank</th>
+							<th colSpan="2">Get Directions</th>
 						</tr>
 					</thead>
 					<tbody>
