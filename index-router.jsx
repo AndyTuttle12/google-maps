@@ -243,8 +243,7 @@ var BootstrapNavBar = React.createClass({
    					</div>
    					<ul className="nav navbar-nav">
 	     				<li><ReactRouter.IndexLink activeClassName="active" to="/">Home</ReactRouter.IndexLink></li>
-	     				<li><ReactRouter.Link activeClassName="active" to="/stuff">Stuff</ReactRouter.Link></li>
-	     				<li><ReactRouter.Link activeClassName="active" to="/contact">Contact</ReactRouter.Link></li>
+	     				<li><ReactRouter.Link activeClassName="active" to="/cities">Test</ReactRouter.Link></li>
    					</ul>
 				</div>
 			</nav>
@@ -255,7 +254,7 @@ var BootstrapNavBar = React.createClass({
 ReactDOM.render(
 	<ReactRouter.Router>
 		<ReactRouter.Route path="/" component={App}>
-			<ReactRouter.IndexRoute component={Cities} cites={cities}/>
+			<ReactRouter.IndexRoute component={Cities} cities={cities}/>
 			<ReactRouter.Route path="/cities" component={Test} />
 		</ReactRouter.Route>
 	</ReactRouter.Router>,
