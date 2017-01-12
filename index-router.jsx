@@ -239,7 +239,7 @@ var BootstrapNavBar = React.createClass({
 			<nav className="navbar navbar-default">
  				<div className="container-fluid">
    					<div className="navbar-header">
-     					<a className="navbar-brand" href="#">WebSiteName</a>
+     					<a className="navbar-brand" href="#">Google Maps</a>
    					</div>
    					<ul className="nav navbar-nav">
 	     				<li><ReactRouter.IndexLink activeClassName="active" to="/">Home</ReactRouter.IndexLink></li>
